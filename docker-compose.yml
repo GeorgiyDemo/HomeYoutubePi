@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    labels:
+      kompose.service.type: nodeport
+    volumes:
+      - './redis/redis_data/:/bitnami/redis/data'
+    restart: on-failure
+  
+  server:
+    build: ./
+    depends_on:
+      - redis
+    devices:
+      - "/dev/tty0:/dev/tty0"
+      - "/dev/vchiq:/dev/vchiq"
+      - "/dev/tty2:/dev/tty2"
+      - "/dev/fb0:/dev/fb0"
+    restart: on-failure
+
+  telegram:
+    build: telegram/.
+    depends_on:
+      - server
+    volumes:
+      - ./yaml/:/app/yaml/
+
+volumes:
+  redis_data:
+    driver: local
