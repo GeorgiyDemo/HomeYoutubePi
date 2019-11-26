@@ -1,4 +1,5 @@
 import subprocess
+from omxplayer import OMXPlayer
 
 class MainClass():
     def __init__(self, video_url):
@@ -6,7 +7,7 @@ class MainClass():
         self.processing()
     
     def processing(self):
-        cmd = "omxplayer `youtube-dl -g -f best "+self.video_url+"` -o local"
-        process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-        print(output, error)
+        
+        proc = subprocess.Popen(['youtube-dl','-f','best', '-g', self.video_url], stdout=subprocess.PIPE)
+        realurl=proc.stdout.read()
+        player = OMXPlayer(realurl.decode("utf-8", "strict")[:-1],args=['-o', 'local'])
