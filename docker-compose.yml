@@ -13,11 +13,12 @@ services:
       - './redis/redis_data/:/bitnami/redis/data'
     restart: on-failure
   
-  server:
+  player:
     build: ./
     depends_on:
       - redis
     devices:
+    #TODO моежtт какие-то девайсы поудалять?
       - "/dev/tty0:/dev/tty0"
       - "/dev/vchiq:/dev/vchiq"
       - "/dev/tty2:/dev/tty2"
@@ -27,9 +28,10 @@ services:
   telegram:
     build: telegram/.
     depends_on:
-      - server
+      - player
     volumes:
       - ./yaml/:/app/yaml/
+    restart: on-failure
 
 volumes:
   redis_data:

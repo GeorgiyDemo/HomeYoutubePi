@@ -17,5 +17,4 @@ ENV TZ 'Europe/Moscow'
 
 RUN pip3 install youtube_dl
 RUN pip3 install -r requirements.txt
-CMD omxplayer `youtube-dl -g -f best https://www.youtube.com/watch?v=uAWuyi9AnSo` -o local
-
+CMD rq worker youtube --url redis://redis:6379/0
