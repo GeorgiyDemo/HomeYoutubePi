@@ -8,6 +8,9 @@ RUN usermod -a -G video root
 RUN \
   apt-get update && \
   apt-get install -y python3 python3-pip python3-dev omxplayer
+
+RUN apt-get install -y libdbus-1-dev libdbus-glib-1-dev
+
 ADD . /code
 WORKDIR /code
 
@@ -16,6 +19,5 @@ ENV LC_ALL en_US.UTF-8
 ENV TZ 'Europe/Moscow'
 
 RUN pip3 install youtube_dl
-RUN apt-get install libdbus-1-dev libdbus-glib-1-dev -y
 RUN pip3 install -r requirements.txt
 CMD rq worker youtube --url redis://redis:6379/0
