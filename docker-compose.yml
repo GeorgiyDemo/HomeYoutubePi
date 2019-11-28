@@ -13,12 +13,19 @@ services:
       - './redis/redis_data/:/bitnami/redis/data'
     restart: on-failure
   
+  dashboard:
+      build: dashboard/.
+      depends_on:
+      - redis
+      ports:
+      - "9181:9181"
+      restart: on-failure
+
   player:
     build: player/.
     depends_on:
       - redis
     devices:
-    #TODO моежtт какие-то девайсы поудалять?
       - "/dev/tty0:/dev/tty0"
       - "/dev/vchiq:/dev/vchiq"
       - "/dev/tty2:/dev/tty2"

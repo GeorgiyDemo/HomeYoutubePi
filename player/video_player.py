@@ -30,10 +30,13 @@ class MainClass():
         - Запуск omxplayer
         :return:
         """
-        proc = subprocess.Popen(['youtube-dl', '-f', 'best', '-g', self.video_url], stdout=subprocess.PIPE)
-        realurl = proc.stdout.read()
-        player = OMXPlayer(realurl.decode("utf-8", "strict")[:-1], args=['-o', 'local'])
-
+        #Т.к. возникает ошибка коннекта к dbus, но при этом всё работает
+        try:
+            proc = subprocess.Popen(['youtube-dl', '-f', 'best', '-g', self.video_url], stdout=subprocess.PIPE)
+            realurl = proc.stdout.read()
+            player = OMXPlayer(realurl.decode("utf-8", "strict")[:-1], args=['-o', 'local'])
+        except:
+            pass
         # Необходимо для удержания очереди в FIFO
         while self.checkIfProcessRunning():
             time.sleep(3)

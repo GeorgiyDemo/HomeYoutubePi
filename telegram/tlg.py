@@ -62,7 +62,7 @@ class TelegramCli(object):
                                    photo='https://sun9-37.userapi.com/c857624/v857624432/10708d/u7yl1BWKmDY.jpg')
 
             elif "youtube.com" in user_msg or "youtu.be" in user_msg:
-                self.queue.enqueue('video_player.MainClass', user_msg)
+                self.queue.enqueue('video_player.MainClass', user_msg, timeout=-1)
                 update.message.reply_text("Добавили видео в очередь 😉")
 
 
