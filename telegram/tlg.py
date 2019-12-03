@@ -54,7 +54,10 @@ class TelegramCli(object):
 
         for update in self.bot.get_updates(offset=self.update_id, timeout=10):
             self.update_id = update.update_id + 1
-            user_msg = update.message.text
+            if update.message.text == None:
+                user_msg = ""
+            else:
+                user_msg = update.message.text
 
             if user_msg == "/start":
                 update.message.reply_text("Привет, добро пожаловать в коммуналку Демы\nСкинь ссылку на видос YouTube")
