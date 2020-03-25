@@ -11,13 +11,15 @@ RUN \
 
 RUN apt-get install -y libdbus-1-dev libdbus-glib-1-dev
 
-ADD . /code
-WORKDIR /code
-
 ENV LANG="en_US.UTF-8"
 ENV LC_ALL en_US.UTF-8
 ENV TZ 'Europe/Moscow'
 
 RUN pip3 install youtube_dl
+
+ADD requirements.txt /app/
+WORKDIR /app
 RUN pip3 install -r requirements.txt
+
+WORKDIR /app/code/
 CMD rq worker youtube --url redis://redis:6379/0

@@ -11,7 +11,7 @@ services:
       kompose.service.type: nodeport
     volumes:
       - './redis/redis_data/:/bitnami/redis/data'
-    restart: on-failure
+    restart: always
   
   dashboard:
       build: dashboard/.
@@ -19,7 +19,7 @@ services:
       - redis
       ports:
       - "9181:9181"
-      restart: on-failure
+      restart: always
 
   player:
     build: player/.
@@ -30,15 +30,18 @@ services:
       - "/dev/vchiq:/dev/vchiq"
       - "/dev/tty2:/dev/tty2"
       - "/dev/fb0:/dev/fb0"
-    restart: on-failure
+    volumes:
+      - ./player/code/:/app/code/
+    restart: always
 
   telegram:
     build: telegram/.
     depends_on:
       - player
     volumes:
-      - ./yaml/:/app/yaml/
-    restart: on-failure
+      - ./yaml/:/app/code/yaml/
+      - ./telegram/code/:/app/code/
+    restart: always
 
 volumes:
   redis_data:

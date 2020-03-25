@@ -18,8 +18,11 @@ RUN echo $TZ > /etc/timezone && \
 RUN \
   apt-get update && \
   apt-get install -y python3 python3-pip python3-dev
-ADD . /app
+
+ADD requirements.txt /app/
 WORKDIR /app
 
 RUN pip3 install -r requirements.txt
+
+WORKDIR /app/code/
 CMD ["python3", "tlg.py"]
