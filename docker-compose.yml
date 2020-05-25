@@ -32,6 +32,7 @@ services:
       - "/dev/fb0:/dev/fb0"
     volumes:
       - ./player/code/:/app/code/
+
     restart: always
 
   telegram:
@@ -41,6 +42,11 @@ services:
     volumes:
       - ./yaml/:/app/code/yaml/
       - ./telegram/code/:/app/code/
+    
+    environment:
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+      TELEGRAM_PROXY: ${TELEGRAM_PROXY}
+    
     restart: always
 
 volumes:

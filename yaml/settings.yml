@@ -1,3 +1,0 @@
-telegram_token: 000000000:AAE0AAE0AAE0AAE0AAE0AAE0AAE0AAAAE0
-#socks5 для подключения клиента telegram
-proxy_str: socks5://login:passwd@ip:port

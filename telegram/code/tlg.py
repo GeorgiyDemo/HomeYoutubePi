@@ -3,25 +3,12 @@
 """
 
 import time
-
+import os
 import redis
 import rq
 import telegram
-import yaml
 from telegram.error import NetworkError, Unauthorized
 
-
-class GetSettingsClass(object):
-    """
-    Чтение настроек с yaml
-    """
-
-    def __init__(self):
-        self.get_settings()
-
-    def get_settings(self):
-        with open("./yaml/settings.yml", 'r') as stream:
-            self.c = yaml.safe_load(stream)
 
 
 class TelegramCli(object):
@@ -32,10 +19,13 @@ class TelegramCli(object):
     def __init__(self, queue, token, proxy):
 
         self.queue = queue
-        request = telegram.utils.request.Request(proxy_url=proxy)
-
         self.update_id = None
-        self.bot = telegram.Bot(token, request=request)
+        
+        if proxy is not None:
+            request = telegram.utils.request.Request(proxy_url=proxy)
+            self.bot = telegram.Bot(token, request=request)
+        else:
+            self.bot = telegram.Bot(token)
 
         try:
             self.update_id = self.bot.get_updates()[0].update_id
@@ -72,11 +62,12 @@ class TelegramCli(object):
 def main():
     # Подключение очереди rq
     queue = rq.Queue('youtube', connection=redis.Redis.from_url('redis://redis:6379/0'))
-    # Получаем настройки бота
-    obj = GetSettingsClass()
     # Запускаем клиент
-    TelegramCli(queue, obj.c["telegram_token"], obj.c["proxy_str"])
-
+    tg_token = os.getenv('TELEGRAM_TOKEN', None)
+    tg_proxy = os.getenv('TELEGRAM_PROXY', None)
+    print(tg_token)
+    print(tg_proxy)
+    TelegramCli(queue, tg_token, tg_proxy)
 
 if __name__ == '__main__':
     main()
