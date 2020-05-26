@@ -1,4 +1,0 @@
-redis==3.1.0
-rq==0.13.0
-omxplayer-wrapper==0.3.2
-psutil==5.6.7
