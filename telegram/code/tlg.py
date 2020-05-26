@@ -21,7 +21,7 @@ class TelegramCli(object):
         self.queue = queue
         self.update_id = None
         
-        if proxy is not None:
+        if proxy is not None and proxy != "":
             request = telegram.utils.request.Request(proxy_url=proxy)
             self.bot = telegram.Bot(token, request=request)
         else:
@@ -65,8 +65,6 @@ def main():
     # Запускаем клиент
     tg_token = os.getenv('TELEGRAM_TOKEN', None)
     tg_proxy = os.getenv('TELEGRAM_PROXY', None)
-    print(tg_token)
-    print(tg_proxy)
     TelegramCli(queue, tg_token, tg_proxy)
 
 if __name__ == '__main__':

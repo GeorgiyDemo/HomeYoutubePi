@@ -40,7 +40,6 @@ services:
     depends_on:
       - player
     volumes:
-      - ./yaml/:/app/code/yaml/
       - ./telegram/code/:/app/code/
     
     environment:
