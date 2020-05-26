@@ -5,7 +5,7 @@ import psutil
 from omxplayer import OMXPlayer
 
 
-class MainClass():
+class MainClass:
     def __init__(self, video_url):
         self.process_name = "omxplayer"
         self.video_url = video_url
@@ -13,7 +13,7 @@ class MainClass():
 
     def checkIfProcessRunning(self):
         """
-        Проверка на существование процесса
+        - Checker for excecuting proc
         :return:
         """
         for proc in psutil.process_iter():
@@ -26,17 +26,17 @@ class MainClass():
 
     def processing(self):
         """
-        - Получение потока воспроизведения с youtube-dl
-        - Запуск omxplayer
+        - Get videostream from youtube-dl
+        - Launch omxplayer
         :return:
         """
-        #Т.к. возникает ошибка коннекта к dbus, но при этом всё работает
+        # It can't connect to dbus sometimes, looks good
         try:
             proc = subprocess.Popen(['youtube-dl', '-f', 'best', '-g', self.video_url], stdout=subprocess.PIPE)
             realurl = proc.stdout.read()
-            player = OMXPlayer(realurl.decode("utf-8", "strict")[:-1], args=['-o', 'local'])
+            OMXPlayer(realurl.decode("utf-8", "strict")[:-1], args=['-o', 'local'])
         except:
             pass
-        # Необходимо для удержания очереди в FIFO
+        # for FIFO queue
         while self.checkIfProcessRunning():
             time.sleep(3)

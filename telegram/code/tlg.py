@@ -1,41 +1,25 @@
-"""
-    Клиент Telegram для добавления плейлиста воспроизведения на Raspberry Pi
-"""
-
+import os
 import time
 
 import redis
 import rq
 import telegram
-import yaml
 from telegram.error import NetworkError, Unauthorized
 
 
-class GetSettingsClass(object):
-    """
-    Чтение настроек с yaml
-    """
-
-    def __init__(self):
-        self.get_settings()
-
-    def get_settings(self):
-        with open("./yaml/settings.yml", 'r') as stream:
-            self.c = yaml.safe_load(stream)
-
-
-class TelegramCli(object):
-    """
-    Запуск Telegram-клиента
-    """
+class TelegramCli:
+    """Telegram CLI for launching youtube-dl on RPI"""
 
     def __init__(self, queue, token, proxy):
 
         self.queue = queue
-        request = telegram.utils.request.Request(proxy_url=proxy)
-
         self.update_id = None
-        self.bot = telegram.Bot(token, request=request)
+
+        if proxy is not None and proxy != "":
+            request = telegram.utils.request.Request(proxy_url=proxy)
+            self.bot = telegram.Bot(token, request=request)
+        else:
+            self.bot = telegram.Bot(token)
 
         try:
             self.update_id = self.bot.get_updates()[0].update_id
@@ -54,28 +38,32 @@ class TelegramCli(object):
 
         for update in self.bot.get_updates(offset=self.update_id, timeout=10):
             self.update_id = update.update_id + 1
-            if update.message.text == None:
+            if update.message.text is None:
                 user_msg = ""
             else:
                 user_msg = update.message.text
 
             if user_msg == "/start":
-                update.message.reply_text("Привет, добро пожаловать в коммуналку Демы\nСкинь ссылку на видос YouTube")
-                self.bot.sendPhoto(chat_id=update.message.chat.id,
-                                   photo='https://sun9-37.userapi.com/c857624/v857624432/10708d/u7yl1BWKmDY.jpg')
+                string = "Welcome to Demka's house\nGive me YouTube's video link 📼"
+                update.message.reply_text(string)
+                self.bot.sendPhoto(chat_id=update.message.chat.id)
 
             elif "youtube.com" in user_msg or "youtu.be" in user_msg:
                 self.queue.enqueue('video_player.MainClass', user_msg, timeout=-1)
-                update.message.reply_text("Добавили видео в очередь 😉")
+                update.message.reply_text("Added video to the queue 😉")
+
+            else:
+                update.message.reply_text("Wrong URL 😕")
 
 
 def main():
-    # Подключение очереди rq
+
+    # rq connector
     queue = rq.Queue('youtube', connection=redis.Redis.from_url('redis://redis:6379/0'))
-    # Получаем настройки бота
-    obj = GetSettingsClass()
-    # Запускаем клиент
-    TelegramCli(queue, obj.c["telegram_token"], obj.c["proxy_str"])
+
+    tg_token = os.getenv('TELEGRAM_TOKEN', None)
+    tg_proxy = os.getenv('TELEGRAM_PROXY', None)
+    TelegramCli(queue, tg_token, tg_proxy)
 
 
 if __name__ == '__main__':
