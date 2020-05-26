@@ -1,6 +1,8 @@
 FROM ubuntu:18.04
 
 ENV LANG="en_US.UTF-8"
+
+#Fixed python print() output
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && apt-get install -y locales
