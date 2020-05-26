@@ -37,6 +37,5 @@ sudo chown -R 1001:1001 redis_data/
 ```
 
 ## Beautiful example
-<p align="center">
-<img src="img.png" width="598" height="483">
-</p>
+
+![example.webp](https://github.com/GeorgiyDemo/HomeYoutubePi/blob/img/example_img.webp)
