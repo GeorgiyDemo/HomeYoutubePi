@@ -8,15 +8,15 @@ Youtube player for Raspberry Pi via Telegram with omxplayer-wrapper & youtube-dl
 
 ## Configure setup
 
-Replace lines in yaml/settings.yml:
+Replace lines in .env file:
 ```
-telegram_token: - your Telegram BOT API token
-proxy_str: - socks5 proxy string for Telegram cli
+TELEGRAM_TOKEN - your Telegram BOT API token from @BotFather
+TELEGRAM_PROXY - socks5 proxy string for Telegram. Remove this line if you don't need that
 ```
 
 ## Install
 
-Clone this repo and launch docker-compose script:
+Clone this repo and launch docker-compose script on your Raspberry Pi:
 ```shell
 git clone https://github.com/GeorgiyDemo/HomeYoutubePi
 cd HomeYoutubePi
