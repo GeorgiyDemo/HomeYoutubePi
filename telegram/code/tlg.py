@@ -44,9 +44,9 @@ class TelegramCli:
                 user_msg = update.message.text
 
             if user_msg == "/start":
-                update.message.reply_text("Welcome to Demka's house\nGive me YouTube's video link 📼")
-                self.bot.sendPhoto(chat_id=update.message.chat.id,
-                                   photo='https://sun9-37.userapi.com/c857624/v857624432/10708d/u7yl1BWKmDY.jpg')
+                string = "Welcome to Demka's house\nGive me YouTube's video link 📼"
+                update.message.reply_text(string)
+                self.bot.sendPhoto(chat_id=update.message.chat.id)
 
             elif "youtube.com" in user_msg or "youtu.be" in user_msg:
                 self.queue.enqueue('video_player.MainClass', user_msg, timeout=-1)
@@ -57,6 +57,7 @@ class TelegramCli:
 
 
 def main():
+
     # rq connector
     queue = rq.Queue('youtube', connection=redis.Redis.from_url('redis://redis:6379/0'))
 
