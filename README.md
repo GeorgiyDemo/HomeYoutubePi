@@ -29,6 +29,13 @@ docker-compose up -d
 - Player - player for youtube's video processing from url in Redis
 - Telegram - client for adding urls to Redis
 
+## Redis problems
+Fixing permissions for appendonly.aof file:
+```shell
+cd && cd HomeYoutubePi/redis
+sudo chown -R 1001:1001 redis_data/
+```
+
 ## Beautiful example
 <p align="center">
 <img src="img.png" width="598" height="483">
