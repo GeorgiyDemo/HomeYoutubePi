@@ -46,7 +46,6 @@ class TelegramCli:
             if user_msg == "/start":
                 string = "Welcome to Demka's house\nGive me YouTube's video link 📼"
                 update.message.reply_text(string)
-                self.bot.sendPhoto(chat_id=update.message.chat.id)
 
             elif "youtube.com" in user_msg or "youtu.be" in user_msg:
                 self.queue.enqueue('video_player.MainClass', user_msg, timeout=-1)
