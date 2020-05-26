@@ -1,19 +1,20 @@
-import time
 import os
+import time
+
 import redis
 import rq
 import telegram
 from telegram.error import NetworkError, Unauthorized
 
 
-class TelegramCli(object):
+class TelegramCli:
     """Telegram CLI for launching youtube-dl on RPI"""
 
     def __init__(self, queue, token, proxy):
 
         self.queue = queue
         self.update_id = None
-        
+
         if proxy is not None and proxy != "":
             request = telegram.utils.request.Request(proxy_url=proxy)
             self.bot = telegram.Bot(token, request=request)
@@ -37,7 +38,7 @@ class TelegramCli(object):
 
         for update in self.bot.get_updates(offset=self.update_id, timeout=10):
             self.update_id = update.update_id + 1
-            if update.message.text == None:
+            if update.message.text is None:
                 user_msg = ""
             else:
                 user_msg = update.message.text
@@ -53,16 +54,16 @@ class TelegramCli(object):
 
             else:
                 update.message.reply_text("Wrong URL 😕")
-                
+
 
 def main():
-
     # rq connector
     queue = rq.Queue('youtube', connection=redis.Redis.from_url('redis://redis:6379/0'))
-    
+
     tg_token = os.getenv('TELEGRAM_TOKEN', None)
     tg_proxy = os.getenv('TELEGRAM_PROXY', None)
     TelegramCli(queue, tg_token, tg_proxy)
+
 
 if __name__ == '__main__':
     main()

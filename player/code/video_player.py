@@ -5,7 +5,7 @@ import psutil
 from omxplayer import OMXPlayer
 
 
-class MainClass():
+class MainClass:
     def __init__(self, video_url):
         self.process_name = "omxplayer"
         self.video_url = video_url
@@ -30,11 +30,11 @@ class MainClass():
         - Launch omxplayer
         :return:
         """
-        #It can't connect to dbus sometimes, looks good
+        # It can't connect to dbus sometimes, looks good
         try:
             proc = subprocess.Popen(['youtube-dl', '-f', 'best', '-g', self.video_url], stdout=subprocess.PIPE)
             realurl = proc.stdout.read()
-            player = OMXPlayer(realurl.decode("utf-8", "strict")[:-1], args=['-o', 'local'])
+            OMXPlayer(realurl.decode("utf-8", "strict")[:-1], args=['-o', 'local'])
         except:
             pass
         # for FIFO queue
