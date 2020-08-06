@@ -32,9 +32,12 @@ class MainClass:
         """
         # It can't connect to dbus sometimes, looks good
         try:
-            proc = subprocess.Popen(['youtube-dl', '-f', 'best', '-g', self.video_url], stdout=subprocess.PIPE)
+            proc = subprocess.Popen(
+                ["youtube-dl", "-f", "best", "-g", self.video_url],
+                stdout=subprocess.PIPE,
+            )
             realurl = proc.stdout.read()
-            OMXPlayer(realurl.decode("utf-8", "strict")[:-1], args=['-o', 'local'])
+            OMXPlayer(realurl.decode("utf-8", "strict")[:-1], args=["-o", "local"])
         except:
             pass
         # for FIFO queue

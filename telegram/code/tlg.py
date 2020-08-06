@@ -48,7 +48,7 @@ class TelegramCli:
                 update.message.reply_text(string)
 
             elif "youtube.com" in user_msg or "youtu.be" in user_msg:
-                self.queue.enqueue('video_player.MainClass', user_msg, timeout=-1)
+                self.queue.enqueue("video_player.MainClass", user_msg, timeout=-1)
                 update.message.reply_text("Added video to the queue 😉")
 
             else:
@@ -58,12 +58,12 @@ class TelegramCli:
 def main():
 
     # rq connector
-    queue = rq.Queue('youtube', connection=redis.Redis.from_url('redis://redis:6379/0'))
+    queue = rq.Queue("youtube", connection=redis.Redis.from_url("redis://redis:6379/0"))
 
-    tg_token = os.getenv('TELEGRAM_TOKEN', None)
-    tg_proxy = os.getenv('TELEGRAM_PROXY', None)
+    tg_token = os.getenv("TELEGRAM_TOKEN", None)
+    tg_proxy = os.getenv("TELEGRAM_PROXY", None)
     TelegramCli(queue, tg_token, tg_proxy)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
