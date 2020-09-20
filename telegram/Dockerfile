@@ -1,8 +1,6 @@
-FROM ubuntu:18.04
+FROM python:3.8.5-buster
 
 ENV LANG="en_US.UTF-8"
-
-#Fixed python print() output
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && apt-get install -y locales
@@ -19,14 +17,11 @@ RUN echo $TZ > /etc/timezone && \
   dpkg-reconfigure -f noninteractive tzdata && \
   apt-get clean
 
-RUN \
-  apt-get update && \
-  apt-get install -y python3 python3-pip python3-dev
-
 ADD requirements.txt /app/
 WORKDIR /app
 
-RUN pip3 install -r requirements.txt
+RUN pip install --upgrade setuptools
+RUN pip install -r requirements.txt
 
 WORKDIR /app/code/
-CMD ["python3", "tlg.py"]
+CMD ["python", "tlg.py"]

@@ -2,6 +2,7 @@ import os
 import time
 
 import redis
+import pickle
 import rq
 import telegram
 from telegram.error import NetworkError, Unauthorized
@@ -48,7 +49,7 @@ class TelegramCli:
                 update.message.reply_text(string)
 
             elif "youtube.com" in user_msg or "youtu.be" in user_msg:
-                self.queue.enqueue("video_player.MainClass", user_msg, timeout=-1)
+                self.queue.enqueue("video_player.MainClass", user_msg, job_timeout=-1)
                 update.message.reply_text("Added video to the queue 😉")
 
             else:
@@ -58,7 +59,8 @@ class TelegramCli:
 def main():
 
     # rq connector
-    queue = rq.Queue("youtube", connection=redis.Redis.from_url("redis://redis:6379/0"))
+    pickle.DEFAULT_PROTOCOL = 4
+    queue = rq.Queue("youtube", connection=redis.Redis.from_url("redis://redis:6379/0"), serializer=pickle)
 
     tg_token = os.getenv("TELEGRAM_TOKEN", None)
     tg_proxy = os.getenv("TELEGRAM_PROXY", None)

@@ -1,6 +1,6 @@
-FROM raspbian/jessie
+FROM balenalib/raspberry-pi-debian:latest
 
-RUN apt-get update -y
+RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install libraspberrypi-bin -y
 RUN usermod -a -G video root
@@ -19,6 +19,8 @@ RUN pip3 install youtube_dl
 
 ADD requirements.txt /app/
 WORKDIR /app
+
+RUN pip3 install --upgrade setuptools
 RUN pip3 install -r requirements.txt
 
 WORKDIR /app/code/

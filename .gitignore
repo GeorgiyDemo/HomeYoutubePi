@@ -2,3 +2,4 @@
 yaml/settings_dev.yml
 .idea/
 *.pyc
+*.rdb
