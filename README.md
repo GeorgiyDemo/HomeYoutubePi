@@ -38,4 +38,5 @@ sudo chown -R 1001:1001 redis_data/
 
 ## Beautiful example
 
-![example.webp](https://github.com/GeorgiyDemo/HomeYoutubePi/blob/img/example_img.webp)
+![example.webp](https://github.com/GeorgiyDemo/HomeYoutubePi/blob/img/example.webp)
+Click [here](https://github.com/GeorgiyDemo/HomeYoutubePi/blob/img/example.gif) if you are using Safari
