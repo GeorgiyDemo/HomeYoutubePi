@@ -1,4 +1,4 @@
 redis==3.5.3
-rq==1.5.2
+rq==1.6.1
 omxplayer-wrapper==0.3.3
 psutil==5.7.2
