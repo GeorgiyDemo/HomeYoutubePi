@@ -1,4 +1,4 @@
 python-telegram-bot==13.5
 redis==3.5.3
-rq==1.8.1
+rq==1.9.0
 PySocks==1.7.1
